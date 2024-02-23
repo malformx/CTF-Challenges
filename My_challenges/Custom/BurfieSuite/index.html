@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burfie Suite Repeater</title>
+    <style>
+        body {
+            background-color: #2B2B2B;
+            color: #D9D9D9;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            background-color: #333;
+            color: #FF5722;
+            padding: 10px;
+            text-align: center;
+        }
+        .container {
+            background-color: #333;
+            border: 1px solid #444;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 5px;
+        }
+        label {
+            color: #FF5722;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            background-color: #444;
+            color: #D9D9D9;
+            border: 1px solid #555;
+            border-radius: 3px;
+            padding: 5px;
+            margin: 5px 0;
+            width: 100%;
+        }
+        button {
+            background-color: #FF5722;
+            color: #D9D9D9;
+            border: none;
+            border-radius: 3px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #FF7043;
+        }
+        #response {
+            background-color: #444;
+            color: #D9D9D9;
+            border: 1px solid #555;
+            border-radius: 3px;
+            padding: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Burfie Suite Repeater</h1>
+
+    <div class="container">
+        <label for="url">URL:</label>
+        <input type="text" id="url" placeholder="Enter URL">
+
+        <label for="method">Method:</label>
+        <select id="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <!-- Add other HTTP methods as needed -->
+        </select>
+
+        <label for="headers">Headers:</label>
+        <textarea id="headers" rows="4"></textarea>
+
+        <label for="body">Request Body:</label>
+        <textarea id="body" rows="6"></textarea>
+
+        <button id="sendRequest">Send Request</button>
+    </div>
+
+    <h2>Response:</h2>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById("sendRequest").addEventListener("click", function () {
+            const url = document.getElementById("url").value;
+            const method = document.getElementById("method").value;
+            const headers = document.getElementById("headers").value;
+            const body = document.getElementById("body").value;
+
+            const formData = new FormData();
+            formData.append("url", url);
+            formData.append("method", method);
+            formData.append("headers", headers);
+            formData.append("body", body);
+
+            fetch("/send_request", {
+                method: "POST",
+                body: formData,
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                document.getElementById("response").textContent = JSON.stringify(data, null, 2);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+                document.getElementById("response").textContent = "An error occurred.";
+            });
+        });
+    </script>
+</body>
+</html>

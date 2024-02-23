@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  bufie_web:
+    build:
+      context: web/
+    
+    # expose:
+    #   - "8000"
+    ports:
+      - 8006:8000
+
+    deploy:
+      mode: replicated
+      replicas: 5
+
+    # networks:
+    #   reach:
+    #     ipv4_address: 10.0.0.10
+
+
+  burfie_ftp:
+    build:
+      context: ftp/
+
+    # ports:
+    #   - "21:21"
+    
+    # networks:
+    #   reach:
+    #     ipv4_address: 10.0.0.20
+
+
+
+
+# networks:
+#   reach:
+#     ipam:
+#       config:
+#         - subnet: 10.0.0.0/8
+          # gateway: 10.0.0.1
